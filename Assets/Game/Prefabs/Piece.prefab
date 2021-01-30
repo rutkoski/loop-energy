@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 2889271486959233812}
   - component: {fileID: 1401501338429964668}
   - component: {fileID: 1045200731756387327}
+  - component: {fileID: -5796416212092532770}
   m_Layer: 0
   m_Name: Piece
   m_TagString: Untagged
@@ -75,10 +76,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee3bd9a95b57e554caf9c2802ef3688b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_sides: 4
+  m_type: 
   m_isStatic: 0
   m_isSource: 0
   m_isTarget: 0
+  m_coordinates:
+    x: 0
+    y: 0
+    z: 0
   m_connections: []
 --- !u!61 &1045200731756387327
 BoxCollider2D:
@@ -106,3 +111,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10, y: 10}
   m_EdgeRadius: 0
+--- !u!114 &-5796416212092532770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7495230723009221610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7875e077acbd514b836bb9d25c3f70d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

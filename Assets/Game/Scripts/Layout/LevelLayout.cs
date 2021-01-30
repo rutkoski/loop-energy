@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelLayout : MonoBehaviour
+public abstract class LevelLayout : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public abstract void Layout(List<PieceController> pieces);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public abstract PieceCoodinates PosToCoord(Vector3 position);
+
+    public abstract Vector3 CoordToPos(PieceCoodinates coord);
+
+    public abstract Vector3 Normalize(Vector3 position);
 }

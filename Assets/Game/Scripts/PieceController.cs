@@ -2,15 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class PieceController : MonoBehaviour, IPointerClickHandler
+public class PieceController : MonoBehaviour
 {
     public delegate void StateChangedEvent(object sender, EventArgs args);
 
     public static event StateChangedEvent OnStateChanged;
 
-    [SerializeField] private int m_sides = 4;
+    [SerializeField] private string m_type;
+    public string Type => m_type;
+
+    //[SerializeField] private int m_sides = 4;
 
     [SerializeField] private bool m_isStatic;
     public bool IsStatic => m_isStatic;
@@ -21,6 +23,9 @@ public class PieceController : MonoBehaviour, IPointerClickHandler
     [SerializeField] private bool m_isTarget;
     public bool IsTarget => m_isTarget;
 
+    [SerializeField] private PieceCoodinates m_coordinates = new PieceCoodinates();
+    public PieceCoodinates Coordinates => m_coordinates;
+
     private bool m_interactable;
     public bool Interactable
     {
@@ -28,7 +33,7 @@ public class PieceController : MonoBehaviour, IPointerClickHandler
         set => m_interactable = value;
     }
 
-    private float m_rotation = 0;
+    //private float m_rotation = 0;
 
     private bool m_connectedToSource;
     public bool ConnectedToSource => m_isSource || m_connectedToSource;
@@ -57,7 +62,7 @@ public class PieceController : MonoBehaviour, IPointerClickHandler
 
         m_mask = 1 << LayerMask.NameToLayer("Connector");
 
-        m_rotation = -360f / m_sides;
+        //m_rotation = -360f / m_sides;
     }
 
     private void Start()
@@ -70,12 +75,8 @@ public class PieceController : MonoBehaviour, IPointerClickHandler
         m_spriteRenderer.color = ConnectedToSource ? Color.green : Color.red;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void StateChanged()
     {
-        if (m_isStatic || !m_interactable) return;
-
-        transform.Rotate(0, 0, m_rotation);
-
         OnStateChanged?.Invoke(this, new EventArgs());
     }
 
