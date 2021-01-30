@@ -11,6 +11,8 @@ public class PieceDragController : MonoBehaviour, IInitializePotentialDragHandle
 
     private LevelLayout Layout => GameController.Instance.Layout;
 
+    private Vector3 m_originalPosition;
+
     private void Awake()
     {
         m_camera = Camera.main;
@@ -21,7 +23,7 @@ public class PieceDragController : MonoBehaviour, IInitializePotentialDragHandle
     {
         if (m_piece.IsStatic || !m_piece.Interactable) return;
 
-        //
+        m_originalPosition = transform.position;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -39,11 +41,7 @@ public class PieceDragController : MonoBehaviour, IInitializePotentialDragHandle
         position.z = transform.position.z - m_camera.transform.position.z;
         position = m_camera.ScreenToWorldPoint(position);
 
-        //position = Layout.Normalize(position);
-
         transform.position = position;
-
-        //m_piece.StateChanged();
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -52,10 +50,21 @@ public class PieceDragController : MonoBehaviour, IInitializePotentialDragHandle
 
         Vector3 position = transform.position;
 
-        position = Layout.Normalize(position);
+        PieceCoordinates coord = Layout.PosToCoord(position);
 
-        transform.position = position;
+        PieceController other = GameController.Instance.Pieces.Find(p => p.Coordinates == coord);
 
-        m_piece.StateChanged();
+        if (other)
+        {
+            transform.position = m_originalPosition;
+        }
+        else
+        {
+            position = Layout.CoordToPos(coord);
+
+            transform.position = position;
+
+            m_piece.StateChanged();
+        }
     }
 }

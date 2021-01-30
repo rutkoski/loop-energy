@@ -12,8 +12,6 @@ public class PieceController : MonoBehaviour
     [SerializeField] private string m_type;
     public string Type => m_type;
 
-    //[SerializeField] private int m_sides = 4;
-
     [SerializeField] private bool m_isStatic;
     public bool IsStatic => m_isStatic;
 
@@ -23,8 +21,8 @@ public class PieceController : MonoBehaviour
     [SerializeField] private bool m_isTarget;
     public bool IsTarget => m_isTarget;
 
-    [SerializeField] private PieceCoodinates m_coordinates = new PieceCoodinates();
-    public PieceCoodinates Coordinates => m_coordinates;
+    [SerializeField] private PieceCoordinates m_coordinates = new PieceCoordinates();
+    public PieceCoordinates Coordinates => m_coordinates;
 
     private bool m_interactable;
     public bool Interactable
@@ -32,8 +30,6 @@ public class PieceController : MonoBehaviour
         get => m_interactable;
         set => m_interactable = value;
     }
-
-    //private float m_rotation = 0;
 
     private bool m_connectedToSource;
     public bool ConnectedToSource => m_isSource || m_connectedToSource;
@@ -61,8 +57,6 @@ public class PieceController : MonoBehaviour
         m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         m_mask = 1 << LayerMask.NameToLayer("Connector");
-
-        //m_rotation = -360f / m_sides;
     }
 
     private void Start()
@@ -114,7 +108,6 @@ public class PieceController : MonoBehaviour
 
                 if (other && other != connector)
                 {
-
                     PieceController parent = other.GetComponentInParent<PieceController>();
 
                     m_connections.Add(parent);

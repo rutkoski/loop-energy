@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     private PieceFactory m_pieceFactory;
 
     private List<PieceController> m_pieces = new List<PieceController>();
+    public List<PieceController> Pieces => m_pieces;
 
     private List<PieceController> m_targets = new List<PieceController>();
 
@@ -36,8 +37,6 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        //EndGame();
-
         LoadLevel(m_levalData);
 
         StartGame();
@@ -45,6 +44,8 @@ public class GameController : MonoBehaviour
 
     public void LoadLevel(LevelData levelData)
     {
+        Debug.Log("[GameController] Level loaded");
+
         while (m_board.childCount > 0 && m_board.GetChild(0) is Transform child)
         {
             Destroy(child);
@@ -75,19 +76,9 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("[GameController] Game started");
 
-        //m_pieces.Clear();
-        //m_pieces.AddRange(m_board.GetComponentsInChildren<PieceController>());
-
-        //m_targets.Clear();
-
         foreach (PieceController piece in m_pieces)
         {
             piece.Interactable = true;
-
-            //if (piece.IsTarget)
-            //{
-            //    m_targets.Add(piece);
-            //}
         }
 
         PieceController.OnStateChanged += PieceController_OnChange;

@@ -11,7 +11,7 @@ public class LevelData : ScriptableObject
     {
         public string type;
 
-        public PieceCoodinates coordinates;
+        public PieceCoordinates coordinates;
 
         [Range(0f, 360f)]
         public float rotation;

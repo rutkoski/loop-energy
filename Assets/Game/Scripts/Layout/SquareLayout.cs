@@ -6,7 +6,7 @@ public class SquareLayout : LevelLayout
 {
     [SerializeField] private Vector3 m_gridSize;
 
-    public override Vector3 CoordToPos(PieceCoodinates coord)
+    public override Vector3 CoordToPos(PieceCoordinates coord)
     {
         Vector3 pos = new Vector3();
 
@@ -17,9 +17,9 @@ public class SquareLayout : LevelLayout
         return pos;
     }
 
-    public override PieceCoodinates PosToCoord(Vector3 position)
+    public override PieceCoordinates PosToCoord(Vector3 position)
     {
-        PieceCoodinates coord = new PieceCoodinates();
+        PieceCoordinates coord = new PieceCoordinates();
         coord.x = (int)Mathf.Round(position.x / m_gridSize.x);
         coord.y = (int)Mathf.Round(position.y / m_gridSize.y);
         coord.z = 0;
