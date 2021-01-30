@@ -62,6 +62,8 @@ public class PieceDragController : MonoBehaviour, IInitializePotentialDragHandle
         {
             position = Layout.CoordToPos(coord);
 
+            m_piece.Coordinates.Set(coord);
+
             transform.position = position;
 
             m_piece.StateChanged();

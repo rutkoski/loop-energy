@@ -13,6 +13,8 @@ public class LevelData : ScriptableObject
 
         public PieceCoordinates coordinates;
 
+        public PieceCoordinates beginCoordinates;
+
         [Range(0f, 360f)]
         public float rotation;
     }
