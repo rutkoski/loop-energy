@@ -6,13 +6,27 @@ using UnityEngine.EventSystems;
 
 public class PieceController : MonoBehaviour, IPointerClickHandler
 {
+    public delegate void StateChangedEvent(object sender, EventArgs args);
+
+    public static event StateChangedEvent OnStateChanged;
+
     [SerializeField] private int m_sides = 4;
 
     [SerializeField] private bool m_isStatic;
+    public bool IsStatic => m_isStatic;
 
     [SerializeField] private bool m_isSource;
+    public bool IsSource => m_isSource;
 
     [SerializeField] private bool m_isTarget;
+    public bool IsTarget => m_isTarget;
+
+    private bool m_interactable;
+    public bool Interactable
+    {
+        get => m_interactable;
+        set => m_interactable = value;
+    }
 
     private float m_rotation = 0;
 
@@ -23,9 +37,9 @@ public class PieceController : MonoBehaviour, IPointerClickHandler
 
     private static List<PieceController> m_pieces = new List<PieceController>();
 
-    public LayerMask m_mask;
+    private LayerMask m_mask;
 
-    private bool m_dirty;
+    private SpriteRenderer m_spriteRenderer;
 
     private void OnEnable()
     {
@@ -39,7 +53,11 @@ public class PieceController : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
-        m_rotation = 360f / m_sides;
+        m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        m_mask = 1 << LayerMask.NameToLayer("Connector");
+
+        m_rotation = -360f / m_sides;
     }
 
     private void Start()
@@ -49,47 +67,19 @@ public class PieceController : MonoBehaviour, IPointerClickHandler
 
     private void Update()
     {
-        GetComponentInChildren<SpriteRenderer>().color = ConnectedToSource ? Color.green : Color.red;
-    }
-
-    private void FixedUpdate()
-    {
-        if (m_dirty)
-        {
-
-            List<PieceController> visited = new List<PieceController>();
-
-        foreach (PieceController piece in m_pieces)
-        {
-            piece.UpdateConnections();
-        }
-
-        foreach (PieceController piece in m_pieces)
-        {
-            if (piece.m_isSource)
-            {
-                piece.UpdateState(visited);
-            }
-        }
-
-
-            m_dirty = false;
-        }
-
+        m_spriteRenderer.color = ConnectedToSource ? Color.green : Color.red;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        //if (m_isStatic) return;
+        if (m_isStatic || !m_interactable) return;
 
         transform.Rotate(0, 0, m_rotation);
 
-        m_dirty = true;
-
-        Physics2D.SyncTransforms();
+        OnStateChanged?.Invoke(this, new EventArgs());
     }
 
-    private void UpdateState(List<PieceController> visited)
+    public void SetConnectedToSource(List<PieceController> visited)
     {
         visited.Add(this);
 
@@ -99,11 +89,11 @@ public class PieceController : MonoBehaviour, IPointerClickHandler
         {
             if (visited.Contains(other)) continue;
 
-            other.UpdateState(visited);
+            other.SetConnectedToSource(visited);
         }
     }
 
-    private void UpdateConnections()
+    public void UpdateConnections()
     {
         m_connectedToSource = false;
 
@@ -116,27 +106,19 @@ public class PieceController : MonoBehaviour, IPointerClickHandler
             Vector2 point = connector.transform.position;
 
             Collider2D[] overlaps = Physics2D.OverlapPointAll(point, m_mask);
-            //Debug.Log(this + " " + connector + " " + overlaps.Length);
+
             foreach (Collider2D overlap in overlaps)
             {
-                //Debug.Log(this + " " + overlap);
-                
                 PieceConnector other = overlap.GetComponent<PieceConnector>();
-
-                Debug.Log(this + " " + overlap + " " + other);
 
                 if (other && other != connector)
                 {
 
                     PieceController parent = other.GetComponentInParent<PieceController>();
 
-                    //Debug.Log(this + " " + parent);
-
                     m_connections.Add(parent);
                 }
             }
         }
-
-        //Debug.Log(this + " " + m_connections.Count);
     }
 }
