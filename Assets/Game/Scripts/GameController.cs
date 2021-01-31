@@ -8,19 +8,22 @@ public class GameController : MonoBehaviour
     private static GameController m_instance;
     public static GameController Instance => m_instance;
 
+    [SerializeField] private Transform m_container;
+    public Transform Container => m_container;
+
     [SerializeField] private Transform m_board;
 
     [SerializeField] private LevelLayout m_layout;
     public LevelLayout Layout => m_layout;
 
-    [SerializeField] private LevelData m_levalData;
+    [SerializeField] private LevelData m_levelData;
 
     private PieceFactory m_pieceFactory;
 
     private List<PieceController> m_pieces = new List<PieceController>();
     public List<PieceController> Pieces => m_pieces;
 
-    private List<PieceController> m_targets = new List<PieceController>();
+    //private List<PieceController> m_targets = new List<PieceController>();
 
     private void Awake()
     {
@@ -37,22 +40,34 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        LoadLevel(m_levalData);
+        //LoadLevel(m_levelData);
 
-        StartGame();
+        //StartGame();
+    }
+
+    private void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    LoadLevel(m_levelData);
+            
+        //    StartGame();
+        //}
     }
 
     public void LoadLevel(LevelData levelData)
     {
-        Debug.Log("[GameController] Level loaded");
+        Debug.Log("[GameController] Load level");
 
-        while (m_board.childCount > 0 && m_board.GetChild(0) is Transform child)
+        m_levelData = levelData;
+
+        while (m_board.childCount > 0)
         {
-            Destroy(child.gameObject);
+            DestroyImmediate(m_board.GetChild(0).gameObject);
         }
 
         m_pieces.Clear();
-        m_targets.Clear();
+        //m_targets.Clear();
 
         foreach (LevelData.PieceData pieceData in levelData.pieces)
         {
@@ -62,17 +77,17 @@ public class GameController : MonoBehaviour
             piece.Interactable = false;
 
             m_pieces.Add(piece);
-            
-            if (piece.IsTarget)
-            {
-                m_targets.Add(piece);
-            }
+
+            //if (piece.IsTarget)
+            //{
+            //    m_targets.Add(piece);
+            //}
         }
 
         m_layout.Layout(m_pieces);
     }
 
-    private void StartGame()
+    public void StartGame()
     {
         Debug.Log("[GameController] Game started");
 
@@ -94,6 +109,8 @@ public class GameController : MonoBehaviour
         {
             piece.Interactable = false;
         }
+
+        MainController.Instance.ShowGameEnded();
     }
 
     private void PieceController_OnChange(object sender, System.EventArgs args)
@@ -125,7 +142,8 @@ public class GameController : MonoBehaviour
     {
         bool connected = true;
 
-        foreach (PieceController piece in m_targets)
+        //foreach (PieceController piece in m_targets)
+        foreach (PieceController piece in m_pieces)
         {
             connected &= piece.ConnectedToSource;
         }

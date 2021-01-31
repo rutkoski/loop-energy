@@ -24,7 +24,7 @@ public class PieceController : MonoBehaviour
     [SerializeField] private PieceCoordinates m_coordinates = new PieceCoordinates();
     public PieceCoordinates Coordinates => m_coordinates;
 
-    private bool m_interactable;
+    [SerializeField] private bool m_interactable;
     public bool Interactable
     {
         get => m_interactable;

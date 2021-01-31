@@ -10,36 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d72706684f0f8d84b86431b6f7c1db4a, type: 3}
-  m_Name: Level Data
+  m_Name: Level 3
   m_EditorClassIdentifier: 
+  layoutType: 0
   pieces:
   - type: rect_source
     coordinates:
-      x: -1
-      y: 0
+      x: -2
+      y: -2
       z: 0
     beginCoordinates:
-      x: -1
-      y: 0
+      x: -2
+      y: -2
       z: 0
     rotation: 0
   - type: rect_1
     coordinates:
-      x: 0
-      y: 0
+      x: -1
+      y: -2
       z: 0
     beginCoordinates:
-      x: 0
-      y: 1
+      x: -1
+      y: 2
       z: 0
     rotation: 0
   - type: rect_target
     coordinates:
-      x: 1
-      y: 0
+      x: 0
+      y: -2
       z: 0
     beginCoordinates:
-      x: 1
-      y: 0
+      x: 0
+      y: -2
       z: 0
     rotation: 180
