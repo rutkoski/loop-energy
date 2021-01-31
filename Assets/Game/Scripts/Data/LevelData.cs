@@ -19,5 +19,7 @@ public class LevelData : ScriptableObject
         public float rotation;
     }
 
+    public LayoutType layoutType;
+
     public PieceData[] pieces;
 }

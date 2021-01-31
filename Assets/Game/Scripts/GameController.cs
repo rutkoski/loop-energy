@@ -48,7 +48,7 @@ public class GameController : MonoBehaviour
 
         while (m_board.childCount > 0 && m_board.GetChild(0) is Transform child)
         {
-            Destroy(child);
+            Destroy(child.gameObject);
         }
 
         m_pieces.Clear();
@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour
         {
             PieceController piece = m_pieceFactory.Create(pieceData.type);
             piece.transform.rotation = Quaternion.Euler(0, 0, pieceData.rotation);
-            piece.Coordinates.Set(pieceData.coordinates);
+            piece.Coordinates.Set(pieceData.beginCoordinates);
             piece.Interactable = false;
 
             m_pieces.Add(piece);
