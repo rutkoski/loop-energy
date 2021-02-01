@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c1a1676fc281aa49b096b90859ca02c, type: 3}
+  m_Name: SFXSettings
+  m_EditorClassIdentifier: 
+  buttonDefaultSound: {fileID: 8300000, guid: d0201142bc1339041b6e75714f4f68e1, type: 3}
+  positiveSound: {fileID: 8300000, guid: 893bebab909afeb4186f703ab14fc021, type: 3}
+  negativeSound: {fileID: 0}
+  winSound: {fileID: 8300000, guid: b51edea26e9cc25489f0fd561d3b60b2, type: 3}
+  applauseSound: {fileID: 0}
+  captureSound: {fileID: 0}
+  popSound: {fileID: 8300000, guid: eac3dece3fad19c459dabcbc4303c9a3, type: 3}

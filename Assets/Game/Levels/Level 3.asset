@@ -26,6 +26,15 @@ MonoBehaviour:
   - x: -1
     y: 2
     z: 0
+  - x: 2
+    y: -1
+    z: 0
+  - x: -1
+    y: 3
+    z: 0
+  - x: -1
+    y: 1
+    z: 0
   pieces:
   - type: rect_source
     coordinates:
@@ -57,3 +66,33 @@ MonoBehaviour:
       y: -2
       z: 0
     rotation: 180
+  - type: rect_source
+    coordinates:
+      x: -1
+      y: 3
+      z: 0
+    beginCoordinates:
+      x: -1
+      y: 3
+      z: 0
+    rotation: 270
+  - type: rect_1
+    coordinates:
+      x: -1
+      y: 2
+      z: 0
+    beginCoordinates:
+      x: -1
+      y: -2
+      z: 0
+    rotation: 90
+  - type: rect_target
+    coordinates:
+      x: -1
+      y: 1
+      z: 0
+    beginCoordinates:
+      x: -1
+      y: 1
+      z: 0
+    rotation: 90

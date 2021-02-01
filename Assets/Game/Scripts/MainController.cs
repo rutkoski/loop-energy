@@ -82,16 +82,7 @@ public class MainController : MonoBehaviour
 
         ApplicationController.Instance.CurrentLevel = currentLevel;
 
-        AnimationController.Instance.FadeOut(() =>
-        {
-            if (TryShowCurrentLevel())
-            {
-                AnimationController.Instance.FadeIn(() =>
-                {
-                    GameController.Instance.StartGame();
-                });
-            }
-        });
+        DebounceNavigation();
     }
 
     private void NextButton_OnClick()
@@ -101,6 +92,22 @@ public class MainController : MonoBehaviour
         currentLevel = Math.Min(currentLevel + 1, ApplicationController.Instance.Levels.Length);
 
         ApplicationController.Instance.CurrentLevel = currentLevel;
+
+        DebounceNavigation();
+    }
+
+    private void DebounceNavigation()
+    {
+        UpdateNavigation();
+
+        StopAllCoroutines();
+
+        StartCoroutine(DebounceNavigationCoroutine());
+    }
+
+    private IEnumerator DebounceNavigationCoroutine()
+    {
+        yield return new WaitForSeconds(0.2f);
 
         AnimationController.Instance.FadeOut(() =>
         {
@@ -120,10 +127,10 @@ public class MainController : MonoBehaviour
         int currentSavedLevel = ApplicationController.Instance.CurrentSavedLevel;
         int numLevels = ApplicationController.Instance.Levels.Length;
 
-        m_prevButton.enabled = currentLevel > 0;
-        m_nextButton.enabled = currentLevel < numLevels - 1 && currentLevel < currentSavedLevel;
+        m_prevButton.interactable = currentLevel > 0;
+        m_nextButton.interactable = currentLevel < numLevels - 1 && currentLevel < currentSavedLevel;
 
-        int level = Math.Min(currentLevel, numLevels - 1);
+        int level = Math.Min(currentLevel + 1, numLevels);
 
         m_levelText.text = $"Level {level}";
     }

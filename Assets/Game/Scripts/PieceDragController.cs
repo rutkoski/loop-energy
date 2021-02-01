@@ -30,7 +30,7 @@ public class PieceDragController : MonoBehaviour, IInitializePotentialDragHandle
     {
         if (m_piece.IsStatic || !m_piece.Interactable) return;
 
-        //
+        SFX.Instance.PlayOneShot(SFXData.Type.Pop);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -59,6 +59,8 @@ public class PieceDragController : MonoBehaviour, IInitializePotentialDragHandle
         if (!slot || other)
         {
             transform.position = m_originalPosition;
+
+            SFX.Instance.PlayOneShot(SFXData.Type.Pop);
         }
         else
         {
@@ -69,6 +71,8 @@ public class PieceDragController : MonoBehaviour, IInitializePotentialDragHandle
             transform.position = position;
 
             m_piece.StateChanged();
+
+            SFX.Instance.PlayOneShot(SFXData.Type.Positive);
         }
     }
 }

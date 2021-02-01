@@ -96,6 +96,8 @@ public class GameController : MonoBehaviour
             piece.Interactable = false;
         }
 
+        SFX.Instance.PlayOneShot(SFXData.Type.Win);
+
         MainController.Instance.ShowGameEnded();
 
         OnGameEnded?.Invoke(this, new EventArgs());

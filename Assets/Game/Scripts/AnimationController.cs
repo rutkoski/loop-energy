@@ -38,13 +38,13 @@ public class AnimationController : MonoBehaviour
     {
         m_fadeCanvasGroup.DOKill();
 
+        m_fadeCanvasGroup.blocksRaycasts = false;
+
         m_fadeCanvasGroup
             .DOFade(0f, instant ? 0f : m_fadeDuration)
             .SetEase(Ease.InOutQuad)
             .OnComplete(() =>
             {
-                m_fadeCanvasGroup.blocksRaycasts = false;
-
                 complete?.Invoke();
             });
     }
