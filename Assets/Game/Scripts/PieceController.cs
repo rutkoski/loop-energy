@@ -9,6 +9,10 @@ public class PieceController : MonoBehaviour
 
     public static event StateChangedEvent OnStateChanged;
 
+    [SerializeField] private Transform m_rotate;
+
+    [SerializeField] private SpriteRenderer[] m_glow;
+
     [SerializeField] private string m_type;
     public string Type => m_type;
 
@@ -40,7 +44,22 @@ public class PieceController : MonoBehaviour
 
     private LayerMask m_mask;
 
-    private SpriteRenderer m_spriteRenderer;
+    public enum State
+    {
+        Init,
+        Idle,
+        FadeIn,
+        FadeOut,
+        FocusIn,
+        FocusOut,
+    }
+
+    private State m_state = State.Init;
+    public State CurrentState
+    {
+        get => m_state;
+        set => m_state = value;
+    }
 
     private void OnEnable()
     {
@@ -54,8 +73,6 @@ public class PieceController : MonoBehaviour
 
     private void Awake()
     {
-        m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-
         m_mask = 1 << LayerMask.NameToLayer("Connector");
     }
 
@@ -66,7 +83,18 @@ public class PieceController : MonoBehaviour
 
     private void Update()
     {
-        m_spriteRenderer.color = ConnectedToSource ? Color.green : Color.red;
+        if (m_glow != null && m_glow.Length > 0)
+        {
+            foreach (SpriteRenderer sprite in m_glow)
+            {
+                sprite.gameObject.SetActive(ConnectedToSource);
+            }
+        }
+    }
+
+    public void Rotate(float rotation)
+    {
+        m_rotate.Rotate(0, 0, rotation);
     }
 
     public void StateChanged()

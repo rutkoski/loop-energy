@@ -7,8 +7,11 @@ public class GameStartedState : BaseGameState
         base.Enter();
 
         Game.Container.gameObject.SetActive(true);
-
-        Game.StartGame();
+        
+        AnimationController.Instance.FadeIn(() =>
+        {
+            Game.StartGame();
+        });
     }
 
     public override void Exit()

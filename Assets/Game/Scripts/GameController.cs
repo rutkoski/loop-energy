@@ -1,10 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PieceFactory))]
 public class GameController : MonoBehaviour
 {
+    public delegate void GameEndedEvent(object sender, EventArgs args);
+
+    public event GameEndedEvent OnGameEnded;
+
     private static GameController m_instance;
     public static GameController Instance => m_instance;
 
@@ -57,7 +62,7 @@ public class GameController : MonoBehaviour
         foreach (LevelData.PieceData pieceData in levelData.pieces)
         {
             PieceController piece = m_pieceFactory.Create(pieceData.type);
-            piece.transform.rotation = Quaternion.Euler(0, 0, pieceData.rotation);
+            piece.Rotate(pieceData.rotation);
             piece.Coordinates.Set(pieceData.beginCoordinates);
             piece.Interactable = false;
 
@@ -92,6 +97,8 @@ public class GameController : MonoBehaviour
         }
 
         MainController.Instance.ShowGameEnded();
+
+        OnGameEnded?.Invoke(this, new EventArgs());
     }
 
     private void PieceController_OnChange(object sender, System.EventArgs args)

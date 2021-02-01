@@ -28,6 +28,9 @@ public class GameEndedState : BaseGameState
 
     private void OnClick()
     {
-        Main.TryShowCurrentLevel();
+        AnimationController.Instance.FadeOut(() =>
+        {
+            Main.TryShowCurrentLevel();
+        });
     }
 }

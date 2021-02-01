@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +12,14 @@ public class MainController : MonoBehaviour
 
     private StateMachine m_stateMachine;
 
-    [SerializeField] private Transform m_ui;
-    [SerializeField] private Transform m_levelSelection;
+    [SerializeField] private CanvasGroup m_ui;
+    [SerializeField] private CanvasGroup m_levelSelection;
+    [SerializeField] private Button m_levelSelectionClickOutsideButton;
     [SerializeField] private Button m_levelSelectionButton;
     [SerializeField] private Button m_prevButton;
     [SerializeField] private Button m_nextButton;
     [SerializeField] private Text m_levelText;
+    private bool m_showLevelSelectionButton;
 
     private void Awake()
     {
@@ -25,12 +28,14 @@ public class MainController : MonoBehaviour
 
         m_stateMachine = gameObject.AddComponent<StateMachine>();
 
-        m_levelSelection.gameObject.SetActive(false);
+        m_levelSelection.alpha = 0;
+        m_levelSelection.blocksRaycasts = false;
     }
 
     private void OnEnable()
     {
         m_levelSelectionButton.onClick.AddListener(LevelSelectionButton_OnClick);
+        m_levelSelectionClickOutsideButton.onClick.AddListener(LevelSelectionClickOutsideButton_OnClick);
 
         m_prevButton.onClick.AddListener(PrevButton_OnClick);
         m_nextButton.onClick.AddListener(NextButton_OnClick);
@@ -39,17 +44,34 @@ public class MainController : MonoBehaviour
     private void OnDisable()
     {
         m_levelSelectionButton.onClick.RemoveListener(LevelSelectionButton_OnClick);
+        m_levelSelectionClickOutsideButton.onClick.RemoveListener(LevelSelectionClickOutsideButton_OnClick);
+
+        m_prevButton.onClick.RemoveListener(PrevButton_OnClick);
+        m_nextButton.onClick.RemoveListener(NextButton_OnClick);
     }
 
     private void Start()
     {
         UpdateNavigation();
-        TryShowCurrentLevel();
+
+        AnimationController.Instance.FadeOut(() =>
+        {
+            TryShowCurrentLevel();
+        }, true);
     }
 
     private void LevelSelectionButton_OnClick()
     {
-        m_levelSelection.gameObject.SetActive(!m_levelSelection.gameObject.activeSelf);
+        m_showLevelSelectionButton = !m_showLevelSelectionButton;
+
+        m_levelSelection.blocksRaycasts = m_showLevelSelectionButton;
+
+        m_levelSelection.DOFade(m_showLevelSelectionButton ? 1f : 0f, 1f).SetEase(Ease.OutQuad);
+    }
+
+    private void LevelSelectionClickOutsideButton_OnClick()
+    {
+        LevelSelectionButton_OnClick();
     }
 
     private void PrevButton_OnClick()
@@ -60,10 +82,16 @@ public class MainController : MonoBehaviour
 
         ApplicationController.Instance.CurrentLevel = currentLevel;
 
-        if (TryShowCurrentLevel())
+        AnimationController.Instance.FadeOut(() =>
         {
-            GameController.Instance.StartGame();
-        }
+            if (TryShowCurrentLevel())
+            {
+                AnimationController.Instance.FadeIn(() =>
+                {
+                    GameController.Instance.StartGame();
+                });
+            }
+        });
     }
 
     private void NextButton_OnClick()
@@ -74,10 +102,16 @@ public class MainController : MonoBehaviour
 
         ApplicationController.Instance.CurrentLevel = currentLevel;
 
-        if (TryShowCurrentLevel())
+        AnimationController.Instance.FadeOut(() =>
         {
-            GameController.Instance.StartGame();
-        }
+            if (TryShowCurrentLevel())
+            {
+                AnimationController.Instance.FadeIn(() =>
+                {
+                    GameController.Instance.StartGame();
+                });
+            }
+        });
     }
 
     public void UpdateNavigation()
@@ -89,12 +123,14 @@ public class MainController : MonoBehaviour
         m_prevButton.enabled = currentLevel > 0;
         m_nextButton.enabled = currentLevel < numLevels - 1 && currentLevel < currentSavedLevel;
 
-        m_levelText.text = $"Level {currentLevel + 1}";
+        int level = Math.Min(currentLevel, numLevels - 1);
+
+        m_levelText.text = $"Level {level}";
     }
 
     public void ToggleUI(bool active)
     {
-        m_ui.gameObject.SetActive(active);
+        m_ui.DOFade(active ? 1f : 0f, 1f).SetEase(Ease.OutQuad);
     }
 
     public bool TryShowCurrentLevel()

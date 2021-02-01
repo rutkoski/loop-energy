@@ -13,6 +13,8 @@ public class NoMoreLevelsState : BaseGameState
         Game.Container.gameObject.SetActive(false);
 
         m_button.onClick.AddListener(OnClick);
+
+        AnimationController.Instance.FadeIn();
     }
 
     public override void Exit()
@@ -24,6 +26,9 @@ public class NoMoreLevelsState : BaseGameState
 
     private void OnClick()
     {
-        Main.ShowLastLevel();
+        AnimationController.Instance.FadeOut(() =>
+        {
+            Main.ShowLastLevel();
+        });
     }
 }
