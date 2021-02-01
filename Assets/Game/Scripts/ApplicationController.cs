@@ -11,13 +11,22 @@ public class ApplicationController : MonoBehaviour
     [SerializeField] private LevelData[] m_levels;
     public LevelData[] Levels => m_levels;
 
+    private int m_currentLevel;
+    public int CurrentLevel
+    {
+        get => m_currentLevel;
+        set => m_currentLevel = value;
+    }
+
+    public int CurrentSavedLevel => PlayerPrefs.GetInt("current_level", 0);
+
     private void Awake()
     {
         if (m_instance) Destroy(gameObject);
         m_instance = this;
         DontDestroyOnLoad(this);
 
-        PlayerPrefs.DeleteAll();
+        m_currentLevel = CurrentSavedLevel;
     }
 
     private void OnDestroy()
@@ -27,24 +36,24 @@ public class ApplicationController : MonoBehaviour
 
     public LevelData CurrentLevelData()
     {
-        int currentLevel = CurrentLevel();
-
-        return currentLevel >= 0 && currentLevel < m_levels.Length ? m_levels[currentLevel] : null;
+        return m_currentLevel >= 0 && m_currentLevel < m_levels.Length ? m_levels[m_currentLevel] : null;
     }
 
-    public int CurrentLevel()
+    public void SaveProgress()
     {
-        int currentLevel = PlayerPrefs.GetInt("current_level", 0);
-
-        return currentLevel < m_levels.Length ? currentLevel : -1;
+        PlayerPrefs.SetInt("current_level", m_currentLevel < m_levels.Length ? m_currentLevel : m_levels.Length - 1);
     }
 
     public void NextLevel()
     {
-        int currentLevel = CurrentLevel();
+        m_currentLevel = Math.Min(m_currentLevel + 1, m_levels.Length);
+    }
 
-        currentLevel = Math.Min(currentLevel + 1, m_levels.Length);
-
-        PlayerPrefs.SetInt("current_level", currentLevel);
+    private void OnGUI()
+    {
+        if (GUILayout.Button("Clear player prefs"))
+        {
+            PlayerPrefs.DeleteAll();
+        }
     }
 }
