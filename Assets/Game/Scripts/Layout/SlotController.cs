@@ -12,6 +12,13 @@ public class SlotController : MonoBehaviour
         set => m_focus = value;
     }
 
+    private PieceCoordinates m_coordinates;
+    public PieceCoordinates Coordinates
+    {
+        get => m_coordinates;
+        set => m_coordinates = value;
+    }
+
     private SpriteRenderer m_spriteRenderer;
 
     private void Awake()

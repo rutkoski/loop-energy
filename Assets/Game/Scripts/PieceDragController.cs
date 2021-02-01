@@ -52,9 +52,11 @@ public class PieceDragController : MonoBehaviour, IInitializePotentialDragHandle
 
         PieceCoordinates coord = Layout.PosToCoord(position);
 
+        SlotController slot = Layout.GetSlotAt(coord);
+
         PieceController other = GameController.Instance.Pieces.Find(p => p.Coordinates == coord);
 
-        if (other)
+        if (!slot || other)
         {
             transform.position = m_originalPosition;
         }

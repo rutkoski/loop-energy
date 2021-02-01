@@ -8,10 +8,10 @@ public class GameController : MonoBehaviour
     private static GameController m_instance;
     public static GameController Instance => m_instance;
 
-    [SerializeField] private Transform m_container;
-    public Transform Container => m_container;
+    [SerializeField] private Transform m_gameContainer;
+    public Transform Container => m_gameContainer;
 
-    [SerializeField] private Transform m_board;
+    [SerializeField] private Transform m_piecesContainer;
 
     [SerializeField] private LevelLayout m_layout;
     public LevelLayout Layout => m_layout;
@@ -22,8 +22,6 @@ public class GameController : MonoBehaviour
 
     private List<PieceController> m_pieces = new List<PieceController>();
     public List<PieceController> Pieces => m_pieces;
-
-    //private List<PieceController> m_targets = new List<PieceController>();
 
     private void Awake()
     {
@@ -40,19 +38,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        //LoadLevel(m_levelData);
-
-        //StartGame();
-    }
-
-    private void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    LoadLevel(m_levelData);
-            
-        //    StartGame();
-        //}
+        //
     }
 
     public void LoadLevel(LevelData levelData)
@@ -61,13 +47,12 @@ public class GameController : MonoBehaviour
 
         m_levelData = levelData;
 
-        while (m_board.childCount > 0)
+        while (m_piecesContainer.childCount > 0)
         {
-            DestroyImmediate(m_board.GetChild(0).gameObject);
+            DestroyImmediate(m_piecesContainer.GetChild(0).gameObject);
         }
 
         m_pieces.Clear();
-        //m_targets.Clear();
 
         foreach (LevelData.PieceData pieceData in levelData.pieces)
         {
@@ -77,13 +62,9 @@ public class GameController : MonoBehaviour
             piece.Interactable = false;
 
             m_pieces.Add(piece);
-
-            //if (piece.IsTarget)
-            //{
-            //    m_targets.Add(piece);
-            //}
         }
 
+        m_layout.CreateBoard(m_levelData);
         m_layout.Layout(m_pieces);
     }
 
@@ -142,7 +123,6 @@ public class GameController : MonoBehaviour
     {
         bool connected = true;
 
-        //foreach (PieceController piece in m_targets)
         foreach (PieceController piece in m_pieces)
         {
             connected &= piece.ConnectedToSource;

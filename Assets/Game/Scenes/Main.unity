@@ -1220,7 +1220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1347119474}
   m_Layer: 0
-  m_Name: Board
+  m_Name: Pieces
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1354,8 +1354,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60dfef1c676cff4894e2758307ccb9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_container: {fileID: 110783402}
-  m_board: {fileID: 1347119474}
+  m_gameContainer: {fileID: 110783402}
+  m_piecesContainer: {fileID: 1347119474}
   m_layout: {fileID: 1477541997}
   m_levelData: {fileID: 0}
 --- !u!4 &1477541995
@@ -1403,8 +1403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_cellSize: {x: 5, y: 5, z: 0}
-  m_gridSize: {x: 5, y: 5, z: 0}
-  m_grid: {fileID: 1940400486}
+  m_boardContainer: {fileID: 1940400486}
   m_slotPrefab: {fileID: 7779464593051538477, guid: 927a5874196d4a042868c678e405e8be, type: 3}
 --- !u!114 &1477541999
 MonoBehaviour:
@@ -1654,7 +1653,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1940400486}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

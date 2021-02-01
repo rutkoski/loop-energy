@@ -13,6 +13,19 @@ MonoBehaviour:
   m_Name: Level 3
   m_EditorClassIdentifier: 
   layoutType: 0
+  board:
+  - x: -2
+    y: -2
+    z: 0
+  - x: -1
+    y: -2
+    z: 0
+  - x: 0
+    y: -2
+    z: 0
+  - x: -1
+    y: 2
+    z: 0
   pieces:
   - type: rect_source
     coordinates:

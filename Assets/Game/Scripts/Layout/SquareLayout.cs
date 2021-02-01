@@ -6,38 +6,34 @@ public class SquareLayout : LevelLayout
 {
     [SerializeField] private Vector3 m_cellSize;
 
-    [SerializeField] private Vector3 m_gridSize;
-
-    [SerializeField] private Transform m_grid;
+    [SerializeField] private Transform m_boardContainer;
 
     [SerializeField] private SlotController m_slotPrefab;
 
     private LayerMask m_slotMask;
 
-    private void Start()
-    {
-        CreateGrid();
-    }
+    private SlotController m_currentSlot;
 
-    private void CreateGrid()
-    {
-        int w = Mathf.FloorToInt(m_gridSize.x / 2);
-        int h = Mathf.FloorToInt(m_gridSize.y / 2);
+    private List<SlotController> m_slots = new List<SlotController>();
 
-        for (int i = -w; i <= w; i++)
+    public override void CreateBoard(LevelData levelData)
+    {
+        foreach (SlotController slot in m_slots)
         {
-            for (int j = -h; j <= h; j++)
-            {
-                PieceCoordinates coord = new PieceCoordinates();
-                coord.x = i;
-                coord.y = j;
+            DestroyImmediate(slot.gameObject);
+        }
 
-                SlotController slot = Instantiate(m_slotPrefab, m_grid, false);
+        m_slots.Clear();
 
-                Vector3 position = CoordToPos(coord);
+        foreach (PieceCoordinates coord in levelData.board)
+        {
+            Vector3 position = CoordToPos(coord);
 
-                slot.transform.localPosition = position;
-            }
+            SlotController slot = Instantiate(m_slotPrefab, m_boardContainer, false);
+            slot.Coordinates = coord;
+            slot.transform.localPosition = position;
+
+            m_slots.Add(slot);
         }
     }
 
@@ -51,13 +47,17 @@ public class SquareLayout : LevelLayout
         RaycastHit2D hit;
 
         Vector3 pos = Input.mousePosition;
-        
+
         Ray ray = Camera.main.ScreenPointToRay(pos);
-        
+
         hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, m_slotMask);
 
-        if (hit.transform != null) {
-            hit.transform.GetComponent<SlotController>()?.SetFocus(true);
+        m_currentSlot?.SetFocus(false);
+
+        if (hit.transform != null)
+        {
+            m_currentSlot = hit.transform.GetComponent<SlotController>();
+            m_currentSlot.SetFocus(true);
         }
     }
 
@@ -93,5 +93,10 @@ public class SquareLayout : LevelLayout
         {
             piece.transform.position = CoordToPos(piece.Coordinates);
         }
+    }
+
+    public override SlotController GetSlotAt(PieceCoordinates coord)
+    {
+        return m_slots.Find(slot => slot.Coordinates == coord);
     }
 }

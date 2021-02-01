@@ -55,5 +55,11 @@ public class ApplicationController : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
+
+        if (GUILayout.Button("Reload level"))
+        {
+            GameController.Instance.LoadLevel(CurrentLevelData());
+            GameController.Instance.StartGame();
+        }
     }
 }

@@ -21,5 +21,7 @@ public class LevelData : ScriptableObject
 
     public LayoutType layoutType;
 
+    public PieceCoordinates[] board;
+
     public PieceData[] pieces;
 }
