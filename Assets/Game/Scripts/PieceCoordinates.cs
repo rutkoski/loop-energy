@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Coordinates identify position on a layout
+ * Square layout uses x,y.
+ * Some Hexagonal layout coordinate systems use x,y,z.
+ */
 [Serializable]
 public class PieceCoordinates
 {

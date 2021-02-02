@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/**
+ * Click pieces to rotate
+ */
 public class PieceClickToRotateController : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private int m_sides = 4;

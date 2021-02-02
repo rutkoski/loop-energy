@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * 
+ * Layouts pieces in a grid.
+ * 
+ * Coordinates used are x, y. 0,0 is center of screen, -1,-1 is down,left and 1,1 is right,up.
+ * 
+ */
 public class SquareLayout : LevelLayout
 {
     [SerializeField] private Vector3 m_cellSize;

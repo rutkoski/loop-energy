@@ -49,6 +49,7 @@ public class ApplicationController : MonoBehaviour
         m_currentLevel = Math.Min(m_currentLevel + 1, m_levels.Length);
     }
 
+#if UNITY_EDITOR
     private void OnGUI()
     {
         if (GUILayout.Button("Clear player prefs"))
@@ -62,4 +63,5 @@ public class ApplicationController : MonoBehaviour
             GameController.Instance.StartGame();
         }
     }
+#endif
 }

@@ -47,10 +47,6 @@ public class SlotController : MonoBehaviour
         UpdateState();
     }
 
-    private void Start()
-    {
-    }
-
     private void OnEnable()
     {
         GameController.Instance.OnGameEnded += Instance_OnGameEnded;

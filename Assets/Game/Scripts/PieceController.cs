@@ -16,18 +16,22 @@ public class PieceController : MonoBehaviour
     [SerializeField] private string m_type;
     public string Type => m_type;
 
+    [Tooltip("Static pieces can not be moved/rotated")]
     [SerializeField] private bool m_isStatic;
     public bool IsStatic => m_isStatic;
 
+    [Tooltip("Source pieces generate energy")]
     [SerializeField] private bool m_isSource;
     public bool IsSource => m_isSource;
 
+    [Tooltip("Target pieces are at the end of a circuit")]
     [SerializeField] private bool m_isTarget;
     public bool IsTarget => m_isTarget;
 
     [SerializeField] private PieceCoordinates m_coordinates = new PieceCoordinates();
     public PieceCoordinates Coordinates => m_coordinates;
 
+    [Tooltip("Enable/disable user interaction")]
     [SerializeField] private bool m_interactable;
     public bool Interactable
     {
@@ -40,36 +44,10 @@ public class PieceController : MonoBehaviour
 
     [SerializeField] private List<PieceController> m_connections = new List<PieceController>();
 
-    private static List<PieceController> m_pieces = new List<PieceController>();
-
+    /**
+     * LayerMask for connector overlaping
+     */
     private LayerMask m_mask;
-
-    public enum State
-    {
-        Init,
-        Idle,
-        FadeIn,
-        FadeOut,
-        FocusIn,
-        FocusOut,
-    }
-
-    private State m_state = State.Init;
-    public State CurrentState
-    {
-        get => m_state;
-        set => m_state = value;
-    }
-
-    private void OnEnable()
-    {
-        m_pieces.Add(this);
-    }
-
-    private void OnDisable()
-    {
-        m_pieces.Remove(this);
-    }
 
     private void Awake()
     {
@@ -102,6 +80,9 @@ public class PieceController : MonoBehaviour
         OnStateChanged?.Invoke(this, new EventArgs());
     }
 
+    /**
+     * Recursively set connected pieces as connected to source
+     */
     public void SetConnectedToSource(List<PieceController> visited)
     {
         visited.Add(this);
@@ -116,6 +97,9 @@ public class PieceController : MonoBehaviour
         }
     }
 
+    /**
+     * Check for connected pieces
+     */
     public void UpdateConnections()
     {
         m_connectedToSource = false;
